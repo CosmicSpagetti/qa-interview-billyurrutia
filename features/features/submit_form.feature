@@ -1,7 +1,30 @@
 Feature: Submit Form
 
   Background:
-    Given I am on the homepage
+    Given   I am on the homepage
 
   Scenario: Submit the form with a specified number of names
-    Then I will see an Input field for name count 
+    Then    I will see an Input field for name count 
+
+  Scenario: Input fields start with default value
+    Then    I see a default value in the input field
+
+  Scenario: Submit the form with a specified number of names and validate that the correct number of suggestions populates
+    When    I enter a specified number of names 10
+    And     I click the submit button
+    Then    I see the correct number 10 of suggestions 
+  
+  Scenario: Selecting a single category 
+    Given   All categories are unselected 
+    And     I select a single category "Angel"
+    Then    I click the submit button
+
+  Scenario: Validate that the selected category from scenario 3 is present in each entry of the list of names
+    Given   All categories are unselected
+    And     I select a single category "Angel"
+    And     I click the submit button
+    Then    I see the selected category "Angel" is present in each entry of the list of names
+
+
+
+
