@@ -38,6 +38,9 @@ end
 
 And(/^I select a single category "(.*?)"$/) do |category|
   check('fantasy_types[]', {option: category.capitalize})
+  unless has_checked_field?(category.capitalize)
+    raise "#{category} was not checked"
+  end
 end
 
 Then(/^I see the selected category "(.*?)" is present in each entry of the list of names$/) do |category|
