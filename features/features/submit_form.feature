@@ -25,6 +25,7 @@ Feature: Submit Form
     And     I click the submit button
     Then    I see the selected category "Angel" is present in each entry of the list of names
 
-
-
-
+  Scenario: Validate that the suggested human name (either first or last name) from Suggest input field is present at least once in the list of names
+    Given   I click on suggest and see a human name has been added to the input field 
+    And     I click the submit button
+    Then    I see the suggested name in atleast one of the names

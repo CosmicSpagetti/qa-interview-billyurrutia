@@ -21,7 +21,10 @@ end
 
 And("I click the submit button") do 
   find('.create_form_submit').click
-  # if ads load in too quick this fails not sure how to prevent that. stupid ads
+  unless has_content?("Best Suggestions")
+    raise "Submit Failed"
+  end
+  # stupid ads intercept this sometimes 
 end 
 
 Then(/^I see the correct number (\d+) of suggestions$/) do |number|
@@ -55,4 +58,24 @@ Then(/^I see the selected category "(.*?)" is present in each entry of the list 
   else
     page.all('.name').all? {|x| x.text.include?(category.downcase)}
   end 
+end
+
+Given('I click on suggest and see a human name has been added to the input field') do 
+  click_on("Suggest")
+  if find('.sizeMedium').value == ""
+    raise "Suggest input box empty"
+  end
+end
+
+Then('I see the suggested name in atleast one of the names') do 
+  sentence_with_suggested_name = find('h1', :text => "Random Fantasy Names for").text
+  sentence_with_suggested_name.slice!("Random Fantasy Names for")
+  suggest_name_array = sentence_with_suggested_name.split(" ")
+  if suggest_name_array.empty? 
+    raise "No name suggested"
+  end
+  # ummm I can explain 
+  unless page.all('.name').any? {|div| suggest_name_array.any? {|name| div.text.downcase.include?(name.downcase)}}
+    raise "Suggested name does not exist in any Random Fantasy Names"
+  end
 end
