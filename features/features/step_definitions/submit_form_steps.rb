@@ -34,11 +34,15 @@ end
 
 Given("All categories are unselected") do 
   click_on("Uncheck all")
+  # this check below is super duper slow 
+  unless page.all('.fantasy_checkbox_div').any? {|div| div.has_checked_field?}
+    raise "field left checked"
+  end
 end
 
 And(/^I select a single category "(.*?)"$/) do |category|
   check('fantasy_types[]', {option: category.capitalize})
-  unless has_checked_field?(category.capitalize)
+  unless find('.fantasy_checkbox_div', {text: category.capitalize}).has_checked_field?
     raise "#{category} was not checked"
   end
 end
